@@ -60,7 +60,7 @@ body {
 /* Make flexible for mobile */
 @media (max-width: 900px) {
   #app {
-    flex-direction: column;
+    flex-direction: column-reverse;
     height: auto;
     overflow: visible;
   }
@@ -348,6 +348,12 @@ button:hover {
 
 /* For Printing/PDF generation */
 .pdf-export-mode .postcard {
-  box-shadow: none;
-  border-radius: 0;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+.pdf-export-mode #export-container {
+  gap: 0 !important;
 }
