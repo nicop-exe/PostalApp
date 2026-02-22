@@ -198,7 +198,21 @@ savePdfBtn.addEventListener('click', async () => {
     const frontCanvas = await html2canvas(cardFront, {
       scale: 2,
       useCORS: true,
-      backgroundColor: null
+      backgroundColor: null,
+      onclone: (clonedDoc, clonedElement) => {
+        // Ensure location label text is preserved
+        const clonedLabel = clonedElement.querySelector('.photo-location-label');
+        if (clonedLabel) {
+          clonedLabel.textContent = photoLocation.value;
+          clonedLabel.style.position = 'absolute';
+          clonedLabel.style.bottom = '10px';
+          clonedLabel.style.left = '20px';
+          clonedLabel.style.fontFamily = "'Pacifico', cursive";
+          clonedLabel.style.fontSize = '1.6rem';
+          clonedLabel.style.color = 'white';
+          clonedLabel.style.textShadow = '0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)';
+        }
+      }
     });
     const frontImg = frontCanvas.toDataURL('image/jpeg', 0.98);
     pdf.addImage(frontImg, 'JPEG', 0, 0, pdfWidth, pdfHeight);
