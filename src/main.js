@@ -176,7 +176,7 @@ savePdfBtn.addEventListener('click', () => {
     margin: 0,
     filename: 'postal-personalizada.pdf',
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, windowWidth: 1024 },
+    html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: 'mm', format: 'a5', orientation: 'landscape' }
   };
 

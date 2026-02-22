@@ -183,7 +183,7 @@ button:hover {
 @media (max-width: 900px) {
   .postcard {
     transform: scale(0.6);
-    margin-bottom: -40%;
+    margin-bottom: calc(var(--card-height) * -0.4);
     /* Adjust space due to scale */
   }
 }
@@ -191,7 +191,7 @@ button:hover {
 @media (max-width: 500px) {
   .postcard {
     transform: scale(0.40);
-    margin-bottom: -60%;
+    margin-bottom: calc(var(--card-height) * -0.6);
   }
 }
 
@@ -347,22 +347,9 @@ button:hover {
 /* Mode toggles logic: for address, we might always want lines, or maybe plain. Let's keep lines always visible for the address to look like a real postcard. */
 
 /* For Printing/PDF generation */
-body.pdf-export-mode,
-.pdf-export-mode #app,
-.pdf-export-mode .preview-area,
 .pdf-export-mode #export-container {
+  gap: 0 !important;
   display: block !important;
-  width: auto !important;
-  height: auto !important;
-  overflow: visible !important;
-  position: static !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  align-items: flex-start !important;
-}
-
-.pdf-export-mode .controls-panel {
-  display: none !important;
 }
 
 .pdf-export-mode .postcard {
@@ -371,8 +358,5 @@ body.pdf-export-mode,
   transform: none !important;
   margin: 0 !important;
   position: static !important;
-}
-
-.pdf-export-mode #export-container {
-  gap: 0 !important;
+  page-break-after: always;
 }
