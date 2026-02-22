@@ -1,0 +1,10 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /postcards/{postcardId} {
+      allow create: if true; // Cualquiera puede guardar postales
+      allow read, update, delete: if false; // Nadie puede leer o modificar de otros
+    }
+  }
+}
