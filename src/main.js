@@ -81,8 +81,11 @@ document.querySelector('#app').innerHTML = `
         
         <div class="right-side">
           <div class="stamp">Estampilla</div>
-          <div class="address-lines"></div>
-          <textarea class="address-area" id="addressText" placeholder="Nombre\nDirección\nCiudad, Código Postal"></textarea>
+          <div class="address-container">
+            <input type="text" class="address-line" id="addressName" placeholder="Nombre" />
+            <input type="text" class="address-line" id="addressStreet" placeholder="Dirección" />
+            <input type="text" class="address-line" id="addressCity" placeholder="Ciudad, Código Postal" />
+          </div>
         </div>
       </div>
 
@@ -100,7 +103,10 @@ const cardBack = document.getElementById('cardBack');
 
 const fontSelect = document.getElementById('fontSelect');
 const messageText = document.getElementById('messageText');
-const addressText = document.getElementById('addressText');
+
+const addressName = document.getElementById('addressName');
+const addressStreet = document.getElementById('addressStreet');
+const addressCity = document.getElementById('addressCity');
 
 const paperColor = document.getElementById('paperColor');
 const lineColor = document.getElementById('lineColor');
@@ -140,12 +146,16 @@ writeMode.addEventListener('change', (e) => {
 // 3. Font Selection
 fontSelect.addEventListener('change', (e) => {
   messageText.style.fontFamily = e.target.value;
-  addressText.style.fontFamily = e.target.value;
+  addressName.style.fontFamily = e.target.value;
+  addressStreet.style.fontFamily = e.target.value;
+  addressCity.style.fontFamily = e.target.value;
 });
 
 // Initialize font to first option
 messageText.style.fontFamily = fontSelect.value;
-addressText.style.fontFamily = fontSelect.value;
+addressName.style.fontFamily = fontSelect.value;
+addressStreet.style.fontFamily = fontSelect.value;
+addressCity.style.fontFamily = fontSelect.value;
 
 // 4. Color Pickers
 paperColor.addEventListener('input', (e) => {
@@ -188,7 +198,9 @@ saveFirebaseBtn.addEventListener('click', async () => {
       paperColor: paperColor.value,
       lineColor: lineColor.value,
       message: messageText.value,
-      address: addressText.value,
+      addressName: addressName.value,
+      addressStreet: addressStreet.value,
+      addressCity: addressCity.value,
       createdAt: serverTimestamp()
     };
 
