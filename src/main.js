@@ -222,12 +222,15 @@ savePdfBtn.addEventListener('click', async () => {
         ];
         addressFields.forEach(({ selector, source }) => {
           const clonedInput = clonedElement.querySelector(selector);
-          if (clonedInput && source.value) {
+          if (clonedInput) {
             const div = clonedDoc.createElement('div');
             div.style.cssText = window.getComputedStyle(source).cssText;
             div.style.fontFamily = fontSelect.value;
             div.style.overflow = 'visible';
-            div.textContent = source.value;
+            div.style.borderBottom = '2px solid ' + getComputedStyle(document.documentElement).getPropertyValue('--line-color').trim();
+            div.style.height = '2.5rem';
+            div.style.lineHeight = '2.5rem';
+            div.textContent = source.value || '';
             clonedInput.parentNode.replaceChild(div, clonedInput);
           }
         });
