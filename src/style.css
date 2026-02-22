@@ -34,6 +34,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-dark);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #app {
@@ -144,7 +145,7 @@ button:hover {
 
 @media (max-width: 900px) {
   .preview-area {
-    overflow-y: visible;
+    overflow: hidden;
     padding: 1rem;
   }
 }
