@@ -195,7 +195,41 @@ savePdfBtn.addEventListener('click', async () => {
     const backCanvas = await html2canvas(cardBack, {
       scale: 2,
       useCORS: true,
-      backgroundColor: null
+      backgroundColor: null,
+      onclone: (clonedDoc, clonedElement) => {
+        // html2canvas can't properly render <textarea> and <input> values.
+        // Replace them with styled <div> elements containing the actual text.
+
+        // Fix message textarea
+        const clonedTextarea = clonedElement.querySelector('.text-area');
+        if (clonedTextarea) {
+          const div = clonedDoc.createElement('div');
+          div.style.cssText = window.getComputedStyle(messageText).cssText;
+          div.style.whiteSpace = 'pre-wrap';
+          div.style.wordWrap = 'break-word';
+          div.style.overflowWrap = 'break-word';
+          div.style.overflow = 'visible';
+          div.textContent = messageText.value;
+          clonedTextarea.parentNode.replaceChild(div, clonedTextarea);
+        }
+
+        // Fix address input fields
+        const addressFields = [
+          { selector: '#addressName', source: addressName },
+          { selector: '#addressStreet', source: addressStreet },
+          { selector: '#addressCity', source: addressCity }
+        ];
+        addressFields.forEach(({ selector, source }) => {
+          const clonedInput = clonedElement.querySelector(selector);
+          if (clonedInput && source.value) {
+            const div = clonedDoc.createElement('div');
+            div.style.cssText = window.getComputedStyle(source).cssText;
+            div.style.overflow = 'visible';
+            div.textContent = source.value;
+            clonedInput.parentNode.replaceChild(div, clonedInput);
+          }
+        });
+      }
     });
     const backImg = backCanvas.toDataURL('image/jpeg', 0.98);
     pdf.addImage(backImg, 'JPEG', 0, 0, pdfWidth, pdfHeight);
