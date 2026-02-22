@@ -205,6 +205,7 @@ savePdfBtn.addEventListener('click', async () => {
         if (clonedTextarea) {
           const div = clonedDoc.createElement('div');
           div.style.cssText = window.getComputedStyle(messageText).cssText;
+          div.style.fontFamily = fontSelect.value;
           div.style.whiteSpace = 'pre-wrap';
           div.style.wordWrap = 'break-word';
           div.style.overflowWrap = 'break-word';
@@ -224,6 +225,7 @@ savePdfBtn.addEventListener('click', async () => {
           if (clonedInput && source.value) {
             const div = clonedDoc.createElement('div');
             div.style.cssText = window.getComputedStyle(source).cssText;
+            div.style.fontFamily = fontSelect.value;
             div.style.overflow = 'visible';
             div.textContent = source.value;
             clonedInput.parentNode.replaceChild(div, clonedInput);
