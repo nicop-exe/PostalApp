@@ -347,11 +347,30 @@ button:hover {
 /* Mode toggles logic: for address, we might always want lines, or maybe plain. Let's keep lines always visible for the address to look like a real postcard. */
 
 /* For Printing/PDF generation */
+body.pdf-export-mode,
+.pdf-export-mode #app,
+.pdf-export-mode .preview-area,
+.pdf-export-mode #export-container {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  position: static !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  align-items: flex-start !important;
+}
+
+.pdf-export-mode .controls-panel {
+  display: none !important;
+}
+
 .pdf-export-mode .postcard {
   box-shadow: none !important;
   border-radius: 0 !important;
   transform: none !important;
   margin: 0 !important;
+  position: static !important;
 }
 
 .pdf-export-mode #export-container {
