@@ -1,0 +1,331 @@
+:root {
+  --bg-color: #fceceb;
+  /* Soft pastel pink/off-white */
+  --panel-bg: #ffffff;
+  --text-dark: #333333;
+  --text-muted: #777777;
+  --primary: #ffadad;
+  /* Pastel red/pink */
+  --primary-hover: #ff9393;
+  --border-light: #ea2027;
+  /* For postal borders */
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  --card-width: 210mm;
+  /* A5 Landscape */
+  --card-height: 148mm;
+  --card-bg: #fffcf8;
+  --line-color: #cccccc;
+
+  /* Fonts */
+  --font-default: 'Inter', sans-serif;
+  --font-handwriting: 'Caveat', cursive;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  display: flex;
+  min-height: 100vh;
+}
+
+#app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Sidebar Controls */
+.controls-panel {
+  width: 350px;
+  background: var(--panel-bg);
+  padding: 2rem;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Make flexible for mobile */
+@media (max-width: 900px) {
+  #app {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .controls-panel {
+    width: 100%;
+    overflow-y: visible;
+  }
+}
+
+.controls-panel h1 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.control-group input[type="file"],
+.control-group select,
+.control-group input[type="color"] {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+}
+
+button:hover {
+  background: var(--primary-hover);
+}
+
+.secondary-btn {
+  background: #f0f0f0;
+  color: var(--text-dark);
+  margin-top: 0.5rem;
+}
+
+.secondary-btn:hover {
+  background: #e4e4e4;
+}
+
+/* Postcard Preview Area */
+.preview-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: var(--bg-color);
+}
+
+/* Export Container (holds the postcards) */
+#export-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  /* space between front and back */
+  align-items: center;
+}
+
+.postcard {
+  width: var(--card-width);
+  height: var(--card-height);
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+
+  /* Scale for mobile responsiveness */
+  transform-origin: top center;
+}
+
+@media (max-width: 900px) {
+  .postcard {
+    transform: scale(0.6);
+    margin-bottom: -40%;
+    /* Adjust space due to scale */
+  }
+}
+
+@media (max-width: 500px) {
+  .postcard {
+    transform: scale(0.40);
+    margin-bottom: -60%;
+  }
+}
+
+/* Postcard Front */
+.postcard.front {
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 15px solid white;
+  /* Classic polaroid/postcard frame look */
+  border-bottom-width: 30px;
+}
+
+.image-placeholder {
+  color: #aaa;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+/* Postcard Back */
+.postcard.back {
+  padding: 15mm;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Divider for postcard back */
+.divider {
+  width: 2px;
+  background-color: var(--line-color);
+  height: 100%;
+  margin: 0 10mm;
+  transition: background-color 0.3s ease;
+}
+
+.left-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.right-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-top: 25mm;
+  /* Space for stamp */
+}
+
+.stamp {
+  width: 20mm;
+  height: 25mm;
+  border: 2px dashed #bbb;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  font-size: 10px;
+}
+
+/* Text / Lines Area */
+.text-area {
+  flex: 1;
+  width: 100%;
+  border: none;
+  resize: none;
+  background: transparent;
+  outline: none;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  /* Determines line spacing */
+  color: var(--text-dark);
+  padding: 0;
+}
+
+/* Address Area */
+.address-area {
+  height: 100%;
+  width: 100%;
+  border: none;
+  resize: none;
+  background: transparent;
+  outline: none;
+  font-size: 1.2rem;
+  line-height: 2.5rem;
+  color: var(--text-dark);
+  padding: 0;
+
+  /* Apply lines directly to textarea to ensure alignment */
+  background-image: repeating-linear-gradient(transparent,
+      transparent calc(2.5rem - 2px),
+      var(--line-color) calc(2.5rem - 2px),
+      var(--line-color) 2.5rem);
+  background-attachment: local;
+}
+
+/* When "write by hand" mode is active */
+.mode-handwritten .text-area {
+  display: none;
+}
+
+.lines-overlay {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(transparent,
+      transparent calc(2.5rem - 2px),
+      var(--line-color) calc(2.5rem - 2px),
+      var(--line-color) 2.5rem);
+  margin-top: 0.5rem;
+}
+
+.mode-handwritten .lines-overlay {
+  display: block;
+}
+
+.mode-typed .text-area {
+  display: block;
+}
+
+/* Address lines on the right side */
+.address-lines {
+  display: none;
+  /* Hidden, now handled by address-area background */
+}
+
+.address-area,
+.text-area {
+  position: relative;
+  z-index: 1;
+  /* Above the lines if we want them, but usually text area has transparent bg */
+}
+
+/* Mode toggles logic: for address, we might always want lines, or maybe plain. Let's keep lines always visible for the address to look like a real postcard. */
+
+/* For Printing/PDF generation */
+.pdf-export-mode .postcard {
+  box-shadow: none;
+  border-radius: 0;
+}
