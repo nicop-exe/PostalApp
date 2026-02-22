@@ -1,5 +1,6 @@
 {
     "hosting": {
+        "site": "postalapp",
         "public": "dist",
         "ignore": [
             "firebase.json",
