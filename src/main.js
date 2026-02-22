@@ -1,5 +1,4 @@
 import './style.css';
-import html2pdf from 'html2pdf.js';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -113,7 +112,7 @@ const lineColor = document.getElementById('lineColor');
 const root = document.documentElement;
 
 const savePdfBtn = document.getElementById('savePdfBtn');
-const exportContainer = document.getElementById('export-container');
+
 
 // Event Listeners
 
@@ -167,22 +166,49 @@ lineColor.addEventListener('input', (e) => {
 });
 
 // 5. PDF Export
-savePdfBtn.addEventListener('click', () => {
-  // Hide borders/shadows for print
+savePdfBtn.addEventListener('click', async () => {
   document.body.classList.add('pdf-export-mode');
+  savePdfBtn.disabled = true;
+  savePdfBtn.innerText = 'Generando PDF...';
 
-  // A5 format: 148 x 210 mm
-  const opt = {
-    margin: 0,
-    filename: 'postal-personalizada.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, windowWidth: 1200 },
-    jsPDF: { unit: 'mm', format: 'a5', orientation: 'landscape' }
-  };
+  try {
+    // Import jsPDF and html2canvas directly for per-page rendering
+    const { jsPDF } = await import('jspdf');
+    const html2canvasModule = await import('html2canvas');
+    const html2canvas = html2canvasModule.default;
 
-  html2pdf().set(opt).from(exportContainer).save().then(() => {
+    const pdf = new jsPDF({ unit: 'mm', format: 'a5', orientation: 'landscape' });
+    const pdfWidth = 210;  // A5 landscape width in mm
+    const pdfHeight = 148; // A5 landscape height in mm
+
+    // Render FRONT side (page 1)
+    const frontCanvas = await html2canvas(cardFront, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null
+    });
+    const frontImg = frontCanvas.toDataURL('image/jpeg', 0.98);
+    pdf.addImage(frontImg, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+    // Render BACK side (page 2)
+    pdf.addPage('a5', 'landscape');
+    const backCanvas = await html2canvas(cardBack, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null
+    });
+    const backImg = backCanvas.toDataURL('image/jpeg', 0.98);
+    pdf.addImage(backImg, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+    pdf.save('postal-personalizada.pdf');
+  } catch (err) {
+    console.error('Error generando PDF:', err);
+    alert('Hubo un error al generar el PDF.');
+  } finally {
     document.body.classList.remove('pdf-export-mode');
-  });
+    savePdfBtn.disabled = false;
+    savePdfBtn.innerText = 'Guardar como PDF (A5)';
+  }
 });
 
 // 6. Firebase Save
